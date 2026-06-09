@@ -1,2 +1,2 @@
 
-Toward Mapping Floods Anywhere via Geographically Conditioned Cross-modal Inference
+Toward Rapid Mapping Floods Anywhere via Geographically Conditioned Cross-modal Inference
