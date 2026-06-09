@@ -10,8 +10,6 @@ GeoFloodNet is built on the idea that **flood evidence is not geographically inv
 
 An online flood monitoring platform powered by GeoFloodNet is currently under development and will be released soon. The platform will allow users to upload an area of interest, select a monitoring period, browse available Sentinel-1 and Sentinel-2 observations, run flood extraction online, and download the generated inundation results.
 
-**Stay tuned.**
-
 ---
 
 ## Overview
