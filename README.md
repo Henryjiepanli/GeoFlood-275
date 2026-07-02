@@ -48,10 +48,6 @@ The platform will support a streamlined workflow:
 
 The platform is currently being finalized and will be made publicly accessible soon.
 
-<p align="center">
-  <img src="assets/platform_workflow.png" width="850">
-</p>
-
 ---
 
 ## Key Idea
@@ -94,10 +90,6 @@ The model uses:
 | Dynamic World NRT                    | Provides event-adjacent land-cover context.                                    |
 
 GeoFloodNet interprets flood evidence through geographic conditioning. Instead of treating optical–SAR differences as universally meaningful change signals, it evaluates whether such differences are consistent with event-induced inundation under the local environmental context.
-
-<p align="center">
-  <img src="assets/geofloodnet_architecture.png" width="900">
-</p>
 
 ---
 
