@@ -115,8 +115,8 @@ Dataset statistics:
 | Split      | Events | Samples | Protocol                     |
 | ---------- | -----: | ------: | ---------------------------- |
 | Train      |    234 | 125,552 | Historical flood events      |
-| Validation |     20 |   4,000 | Temporally separated events  |
-| Test       |     21 |   4,003 | Temporally separated events  |
+| Validation |     20 |   4,476 | Temporally separated events  |
+| Test       |     21 |   3,527 | Temporally separated events  |
 | Total      |    275 | 133,555 | Global event-level benchmark |
 
 The reference labels correspond to **event-induced inundation**, not generic surface water. Permanent and background water bodies are excluded under the adopted reference definition.
