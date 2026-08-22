@@ -2,7 +2,7 @@
 
 # GeoFloodNet
 
-## Toward Rapid Flood Mapping Anywhere via Geographically Conditioned Cross-modal Inference
+## Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical–SAR Fusion
 
 This repository serves as the official project page for **GeoFloodNet**, a geographically conditioned cross-modal framework for rapid event-induced flood inundation mapping.
 
