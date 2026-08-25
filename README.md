@@ -20,7 +20,7 @@ An online flood monitoring platform powered by GeoFloodNet is currently under de
 
 Rapid flood mapping requires not only timely satellite observations, but also reliable interpretation across heterogeneous geographic environments. In practical emergency response, pre-event optical imagery can provide land-surface context before a disaster, while post-event SAR imagery provides all-weather crisis-time observations during or immediately after the flood event.
 
-However, optical–SAR discrepancies do not have fixed flood semantics across regions. A low-backscatter SAR response may indicate newly inundated cropland in one area, but may correspond to wetland conditions, permanent water, smooth surfaces, or terrain-related effects in another. This makes rapid flood mapping a geographically conditioned inference problem rather than a simple cross-modal change detection task.
+However, optical–SAR discrepancies do not have fixed flood semantics across regions. A low-backscatter SAR response may indicate newly inundated cropland in one area, but may correspond to wetland conditions, permanent water, smooth surfaces, or terrain-related effects in another. This makes rapid flood mapping a terrain and land-cover conditioned inference problem rather than a simple cross-modal change detection task.
 
 This project introduces:
 
