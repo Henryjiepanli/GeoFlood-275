@@ -504,7 +504,7 @@ if __name__ == "__main__":
 
     # resume / save
     parser.add_argument("--load", type=str, default=None)
-    parser.add_argument("--save_path", type=str, default="./Experiments/Baseline_FloodNet")
+    parser.add_argument("--save_path", type=str, default="./Experiments/FloodNet")
 
     # TIF dataset root
     parser.add_argument("--dataset_root", type=str, required=True,
