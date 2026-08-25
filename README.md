@@ -51,9 +51,8 @@ GeoFloodNet uses the following inputs:
 Unlike simple channel concatenation, GeoFloodNet explicitly uses terrain and land-cover priors to condition the interpretation of optical–SAR evidence. These terrain and land-cover priors are used to:
 
 - modulate modality-specific optical and SAR features;
-- estimate local modality reliability;
-- regulate cross-modal fusion;
-- suppress flood-like background responses in complex environments.
+- spatially Adaptively Modality Weighting;
+- regulate cross-modal fusion.
 
 This design allows similar optical–SAR patterns to be interpreted differently under different terrain and land-cover settings.
 
