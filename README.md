@@ -38,13 +38,13 @@ The platform will support a streamlined workflow:
 
 | Step                         | Description                                                                                                           |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 1. Upload AOI                | Upload a target area using GeoJSON or Shapefile.                                                                      |
-| 2. Select time range         | Specify the monitoring period for the target flood event.                                                             |
-| 3. Retrieve observations     | The platform automatically searches available Sentinel-1 and Sentinel-2 data within the selected area and time range. |
-| 4. Prepare geographic priors | Terrain and land-cover information are automatically prepared in the background.                                      |
-| 5. Select image pair         | Users select the appropriate pre-event optical and post-event SAR observations from the available candidates.         |
-| 6. Run flood extraction      | GeoFloodNet performs geographically conditioned optical–SAR inference online.                                         |
-| 7. Download results          | Users can download the generated flood inundation map and associated outputs.                                         |
+| 1. Upload AOI                     | Upload a target area using GeoJSON or Shapefile.                                                                      |
+| 2. Select time range              | Specify the monitoring period for the target flood event.                                                             |
+| 3. Retrieve observations          | The platform automatically searches available Sentinel-1 and Sentinel-2 data within the selected area and time range. |
+| 4. Prepare Terrain and land-cover | Terrain and land-cover information are automatically prepared in the background.                                      |
+| 5. Select image pair              | Users select the appropriate pre-event optical and post-event SAR observations from the available candidates.         |
+| 6. Run flood extraction           | GeoFloodNet performs geographically conditioned optical–SAR inference online.                                         |
+| 7. Download results               | Users can download the generated flood inundation map and associated outputs.                                         |
 
 The platform is currently being finalized and will be made publicly accessible soon.
 
@@ -60,11 +60,11 @@ Most cross-modal flood mapping methods treat differences between pre-event optic
 
 This distinction is important because flood-like image responses may arise from multiple non-flood conditions, including permanent water, wetlands, wet soils, agricultural activities, smooth built-up surfaces, and terrain effects.
 
-### Geographic conditioning as a core mechanism
+### Terrain- and Land-Cover conditioning as a core mechanism
 
-GeoFloodNet does not simply concatenate geographic priors as additional input channels. Instead, terrain and land-cover priors are used to condition the interpretation of optical–SAR evidence.
+GeoFloodNet does not simply concatenate terrain and land-cover as additional input channels. Instead, terrain and land-cover priors are used to condition the interpretation of optical–SAR evidence.
 
-Specifically, geographic priors are used to:
+Specifically, Terrain- and Land-Cover are used to:
 
 * modulate modality-specific optical and SAR features;
 * estimate local modality reliability;
@@ -77,7 +77,7 @@ This design enables GeoFloodNet to assign different flood semantics to similar o
 
 ## GeoFloodNet
 
-GeoFloodNet is a geographically conditioned optical–SAR fusion framework for rapid event-induced flood inundation mapping.
+GeoFloodNet is a terrain- and land-cover conditioned optical–SAR fusion framework for rapid event-induced flood inundation mapping.
 
 The model uses:
 
