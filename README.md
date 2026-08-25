@@ -4,9 +4,9 @@
 
 ### Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical–SAR Fusion
 
-**GeoFloodNet** is a geographically conditioned cross-modal framework for rapid **event-induced flood inundation mapping** from pre-event Sentinel-2 optical imagery and post-event Sentinel-1 SAR imagery.
+**GeoFloodNet** is a terrain- and land-cover-conditioned cross-modal framework for rapid **event-induced flood inundation mapping** from pre-event Sentinel-2 optical imagery and post-event Sentinel-1 SAR imagery.
 
-The key idea is simple: **flood evidence is not geographically invariant**. Similar optical–SAR discrepancies may indicate true inundation in low-lying cropland, but may also arise from wetlands, permanent water, terrain shadow, smooth artificial surfaces, or other flood-like background conditions. GeoFloodNet therefore interprets optical–SAR evidence jointly with local **terrain** and **land-cover** context rather than treating cross-modal differences as universally valid flood cues.
+The key idea is simple: **flood evidence varies across terrain and land-cover conditions**. Similar optical–SAR discrepancies may indicate true inundation in low-lying cropland, but may also arise from wetlands, permanent water, terrain shadow, smooth artificial surfaces, or other flood-like background conditions. GeoFloodNet therefore interprets optical–SAR evidence jointly with local **terrain** and **land-cover** context rather than treating cross-modal differences as universally valid flood cues.
 
 <p align="center">
   <img src="ai-geoflood.png" width="850" alt="GeoFloodNet overview">
@@ -18,7 +18,7 @@ The key idea is simple: **flood evidence is not geographically invariant**. Simi
 
 - **GeoFloodNet** — a terrain- and land-cover-conditioned optical–SAR fusion framework for rapid flood inundation mapping.
 - **GeoFlood-275** — a global event-level benchmark containing 275 flood event–AOI pairs and 133,555 image patches.
-- **Geographic conditioning** — terrain and land-cover priors are used to modulate feature extraction, estimate modality reliability, regulate cross-modal fusion, and suppress flood-like background responses.
+- **Terrain and land-cover conditioning** — terrain and land-cover priors are used to modulate feature extraction, estimate modality reliability, regulate cross-modal fusion, and suppress flood-like background responses.
 - **Official training and evaluation code** — including GeoTIFF data loading, normalization, training, testing, metrics, prediction masks, and visualization.
 - **Online flood monitoring platform** — an upcoming interface for AOI upload, Sentinel-1/2 observation retrieval, online flood extraction, visualization, and result download.
 
@@ -26,7 +26,7 @@ The key idea is simple: **flood evidence is not geographically invariant**. Simi
 
 ## Motivation
 
-Rapid flood mapping requires both timely satellite observations and reliable interpretation across heterogeneous geographic environments. Pre-event optical imagery provides detailed land-surface context, while post-event SAR imagery offers all-weather observations during or immediately after a flood event.
+Rapid flood mapping requires both timely satellite observations and reliable interpretation across diverse terrain and land-cover environments. Pre-event optical imagery provides detailed land-surface context, while post-event SAR imagery offers all-weather observations during or immediately after a flood event.
 
 However, optical–SAR discrepancies do not have fixed flood semantics across regions. For example, low SAR backscatter may indicate newly inundated cropland in one location, while a similar response elsewhere may correspond to permanent water, wetland, wet soil, smooth built-up surfaces, or terrain-related effects.
 
@@ -48,20 +48,20 @@ GeoFloodNet uses the following inputs:
 | **ESA WorldCover v200** | Provides stable global land-cover semantics. |
 | **Dynamic World NRT** | Provides event-adjacent land-cover context. |
 
-Unlike simple channel concatenation, GeoFloodNet explicitly uses terrain and land-cover priors to condition the interpretation of optical–SAR evidence. These geographic priors are used to:
+Unlike simple channel concatenation, GeoFloodNet explicitly uses terrain and land-cover priors to condition the interpretation of optical–SAR evidence. These terrain and land-cover priors are used to:
 
 - modulate modality-specific optical and SAR features;
 - estimate local modality reliability;
 - regulate cross-modal fusion;
 - suppress flood-like background responses in complex environments.
 
-This design allows similar optical–SAR patterns to be interpreted differently under different geographic settings.
+This design allows similar optical–SAR patterns to be interpreted differently under different terrain and land-cover settings.
 
 ---
 
 ## GeoFlood-275 Benchmark
 
-**GeoFlood-275** is a global event-level benchmark designed for geographically conditioned rapid flood inundation mapping.
+**GeoFlood-275** is a global event-level benchmark designed for terrain- and land-cover-conditioned rapid flood inundation mapping.
 
 ### Data Components
 
@@ -173,9 +173,10 @@ python -m pip install -r requirements.txt
 ```bash
 CUDA_VISIBLE_DEVICES=0 python train.py \
   --dataset_root /path/to/GeoFlood-275/Benchmark_all \
-  --pre_s1 path \
-  --pre_s2 path \
   --save_path ./Experiments/GeoFloodNet \
+  --psdp_mix \
+  --pre_s1 ./Pretrain_Experiments/encoder_s1.pth \
+  --pre_s2 ./Pretrain_Experiments/encoder_s2.pth \
   --batchsize 8 \
   --amp
 ```
@@ -216,9 +217,9 @@ The planned workflow is:
 | 1 | **Upload AOI** | Upload a target area using GeoJSON or Shapefile. |
 | 2 | **Select time range** | Specify the monitoring period for the target flood event. |
 | 3 | **Retrieve observations** | Automatically search available Sentinel-1 and Sentinel-2 observations. |
-| 4 | **Prepare geographic context** | Automatically prepare terrain and land-cover information. |
+| 4 | **Prepare terrain and land-cover context** | Automatically prepare terrain and land-cover information. |
 | 5 | **Select image pair** | Select suitable pre-event optical and post-event SAR observations. |
-| 6 | **Run flood extraction** | Perform geographically conditioned optical–SAR inference with GeoFloodNet. |
+| 6 | **Run flood extraction** | Perform terrain- and land-cover-conditioned optical–SAR inference with GeoFloodNet. |
 | 7 | **Export results** | Visualize and download the generated flood inundation map and associated outputs. |
 
 The platform will be made publicly accessible after finalization.
