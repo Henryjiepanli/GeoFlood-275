@@ -1,239 +1,251 @@
-> 🚧 The GeoFloodNet online flood monitoring platform is under development and will be released soon.
+> 🚧 **Online Platform:** The GeoFloodNet online flood monitoring platform is currently under development and will be released soon.
 
 # GeoFloodNet
 
-## Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical–SAR Fusion
+### Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical–SAR Fusion
 
-This repository serves as the official project page for **GeoFloodNet**, a geographically conditioned cross-modal framework for rapid event-induced flood inundation mapping.
+**GeoFloodNet** is a geographically conditioned cross-modal framework for rapid **event-induced flood inundation mapping** from pre-event Sentinel-2 optical imagery and post-event Sentinel-1 SAR imagery.
 
-GeoFloodNet is built on the idea that **flood evidence is not geographically invariant**. Similar optical–SAR discrepancies may indicate true inundation in low-lying cropland, but may also correspond to wetlands, permanent water, terrain shadow, smooth artificial surfaces, or other flood-like background conditions elsewhere. GeoFloodNet addresses this challenge by interpreting pre-event optical context and post-event SAR evidence under local terrain and land-cover conditions.
-
-An online flood monitoring platform powered by GeoFloodNet is currently under development and will be released soon. The platform will allow users to upload an area of interest, select a monitoring period, browse available Sentinel-1 and Sentinel-2 observations, run flood extraction online, and download the generated inundation results.
+The key idea is simple: **flood evidence is not geographically invariant**. Similar optical–SAR discrepancies may indicate true inundation in low-lying cropland, but may also arise from wetlands, permanent water, terrain shadow, smooth artificial surfaces, or other flood-like background conditions. GeoFloodNet therefore interprets optical–SAR evidence jointly with local **terrain** and **land-cover** context rather than treating cross-modal differences as universally valid flood cues.
 
 <p align="center">
-  <img src="ai-geoflood.png" width="850" alt="GeoFloodNet value illustration">
+  <img src="ai-geoflood.png" width="850" alt="GeoFloodNet overview">
 </p>
 
 ---
 
-## Overview
+## Highlights
 
-Rapid flood mapping requires not only timely satellite observations, but also reliable interpretation across heterogeneous geographic environments. In practical emergency response, pre-event optical imagery can provide land-surface context before a disaster, while post-event SAR imagery provides all-weather crisis-time observations during or immediately after the flood event.
-
-However, optical–SAR discrepancies do not have fixed flood semantics across regions. A low-backscatter SAR response may indicate newly inundated cropland in one area, but may correspond to wetland conditions, permanent water, smooth surfaces, or terrain-related effects in another. This makes rapid flood mapping a terrain and land-cover conditioned inference problem rather than a simple cross-modal change detection task.
-
-This project introduces:
-
-* **GeoFloodNet**, a geographically conditioned optical–SAR fusion framework for rapid event-induced inundation mapping;
-* **GeoFlood-275**, a global event-level benchmark constructed to develop and evaluate geographically conditioned flood mapping;
-* an upcoming **online flood monitoring platform** that will provide an accessible interface for applying GeoFloodNet to user-defined areas of interest.
+- **GeoFloodNet** — a terrain- and land-cover-conditioned optical–SAR fusion framework for rapid flood inundation mapping.
+- **GeoFlood-275** — a global event-level benchmark containing 275 flood event–AOI pairs and 133,555 image patches.
+- **Geographic conditioning** — terrain and land-cover priors are used to modulate feature extraction, estimate modality reliability, regulate cross-modal fusion, and suppress flood-like background responses.
+- **Official training and evaluation code** — including GeoTIFF data loading, normalization, training, testing, metrics, prediction masks, and visualization.
+- **Online flood monitoring platform** — an upcoming interface for AOI upload, Sentinel-1/2 observation retrieval, online flood extraction, visualization, and result download.
 
 ---
 
-## Online Flood Monitoring Platform
+## Motivation
 
-The GeoFloodNet online platform is designed to make rapid flood mapping accessible without requiring users to manually download, preprocess, and align multi-source remote-sensing data.
+Rapid flood mapping requires both timely satellite observations and reliable interpretation across heterogeneous geographic environments. Pre-event optical imagery provides detailed land-surface context, while post-event SAR imagery offers all-weather observations during or immediately after a flood event.
 
-The platform will support a streamlined workflow:
+However, optical–SAR discrepancies do not have fixed flood semantics across regions. For example, low SAR backscatter may indicate newly inundated cropland in one location, while a similar response elsewhere may correspond to permanent water, wetland, wet soil, smooth built-up surfaces, or terrain-related effects.
 
-| Step                         | Description                                                                                                           |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 1. Upload AOI                     | Upload a target area using GeoJSON or Shapefile.                                                                      |
-| 2. Select time range              | Specify the monitoring period for the target flood event.                                                             |
-| 3. Retrieve observations          | The platform automatically searches available Sentinel-1 and Sentinel-2 data within the selected area and time range. |
-| 4. Prepare Terrain and land-cover | Terrain and land-cover information are automatically prepared in the background.                                      |
-| 5. Select image pair              | Users select the appropriate pre-event optical and post-event SAR observations from the available candidates.         |
-| 6. Run flood extraction           | GeoFloodNet performs geographically conditioned optical–SAR inference online.                                         |
-| 7. Download results               | Users can download the generated flood inundation map and associated outputs.                                         |
+GeoFloodNet formulates rapid flood mapping as a **terrain- and land-cover-conditioned inference problem** rather than a simple cross-modal change detection task. Instead of asking only whether the pre-event optical image and post-event SAR image are different, GeoFloodNet asks:
 
-The platform is currently being finalized and will be made publicly accessible soon.
-
----
-
-## Key Idea
-
-### From cross-modal difference detection to flood-evidence interpretation
-
-Most cross-modal flood mapping methods treat differences between pre-event optical imagery and post-event SAR imagery as direct flood cues. GeoFloodNet instead asks:
-
-> Is the observed optical–SAR evidence flood-relevant under the local terrain and land-cover context?
-
-This distinction is important because flood-like image responses may arise from multiple non-flood conditions, including permanent water, wetlands, wet soils, agricultural activities, smooth built-up surfaces, and terrain effects.
-
-### Terrain- and Land-Cover conditioning as a core mechanism
-
-GeoFloodNet does not simply concatenate terrain and land-cover as additional input channels. Instead, terrain and land-cover priors are used to condition the interpretation of optical–SAR evidence.
-
-Specifically, Terrain- and Land-Cover are used to:
-
-* modulate modality-specific optical and SAR features;
-* estimate local modality reliability;
-* regulate cross-modal fusion;
-* suppress flood-like background responses in complex environments.
-
-This design enables GeoFloodNet to assign different flood semantics to similar optical–SAR patterns across different geographic settings.
+> **Is the observed optical–SAR evidence flood-relevant under the local terrain and land-cover context?**
 
 ---
 
 ## GeoFloodNet
 
-GeoFloodNet is a terrain- and land-cover conditioned optical–SAR fusion framework for rapid event-induced flood inundation mapping.
+GeoFloodNet uses the following inputs:
 
-The model uses:
+| Input | Role |
+| --- | --- |
+| **Pre-event Sentinel-2** | Provides land-surface semantics and background context before the flood event. |
+| **Post-event Sentinel-1** | Provides all-weather crisis-time evidence of flood-related surface responses. |
+| **Slope** | Provides terrain constraints for flood plausibility. |
+| **ESA WorldCover v200** | Provides stable global land-cover semantics. |
+| **Dynamic World NRT** | Provides event-adjacent land-cover context. |
 
-| Input                                | Role                                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------ |
-| Pre-event Sentinel-2 optical imagery | Provides land-surface semantics and background context before the flood event. |
-| Post-event Sentinel-1 SAR imagery    | Provides all-weather crisis-time evidence of flood-related surface responses.  |
-| Slope                                | Provides terrain constraints for flood plausibility.                           |
-| ESA WorldCover                       | Provides stable global land-cover semantics.                                   |
-| Dynamic World NRT                    | Provides event-adjacent land-cover context.                                    |
+Unlike simple channel concatenation, GeoFloodNet explicitly uses terrain and land-cover priors to condition the interpretation of optical–SAR evidence. These geographic priors are used to:
 
-GeoFloodNet interprets flood evidence through geographic conditioning. Instead of treating optical–SAR differences as universally meaningful change signals, it evaluates whether such differences are consistent with event-induced inundation under the local environmental context.
+- modulate modality-specific optical and SAR features;
+- estimate local modality reliability;
+- regulate cross-modal fusion;
+- suppress flood-like background responses in complex environments.
+
+This design allows similar optical–SAR patterns to be interpreted differently under different geographic settings.
 
 ---
 
-## GeoFlood-275
+## GeoFlood-275 Benchmark
 
-GeoFlood-275 is a global event-level benchmark constructed for geographically conditioned rapid flood inundation mapping.
+**GeoFlood-275** is a global event-level benchmark designed for geographically conditioned rapid flood inundation mapping.
+
+### Data Components
 
 Each event–AOI pair contains:
 
-| Component                       | Description                           |
-| ------------------------------- | ------------------------------------- |
-| Pre-event optical image         | Sentinel-2 RGB + NIR                  |
-| Post-event SAR image            | Sentinel-1 VV + VH                    |
-| Reference map                   | EMSR-derived event-induced inundation |
-| Terrain prior                   | Slope derived from Copernicus DEM     |
-| Stable land-cover prior         | ESA v200 WorldCover                   |
-| Event-adjacent land-cover prior | Dynamic World NRT                     |
-| Spatial resolution              | 10 m                                  |
-| Patch size                      | 512 × 512                             |
+| Component | Description |
+| --- | --- |
+| Pre-event optical image | Sentinel-2 RGB + NIR |
+| Post-event SAR image | Sentinel-1 VV + VH |
+| Reference map | EMSR-derived event-induced inundation |
+| Terrain prior | Slope derived from Copernicus DEM |
+| Stable land-cover prior | ESA WorldCover v200 |
+| Event-adjacent land-cover prior | Dynamic World NRT |
+| Spatial resolution | 10 m |
+| Patch size | 512 × 512 |
 
-Dataset statistics:
+### Dataset Statistics
 
-| Split      | Events | Samples | Protocol                     |
-| ---------- | -----: | ------: | ---------------------------- |
-| Train      |    234 | 125,552 | Historical flood events      |
-| Validation |     20 |   4,476 | Temporally separated events  |
-| Test       |     21 |   3,527 | Temporally separated events  |
-| Total      |    275 | 133,555 | Global event-level benchmark |
+| Split | Events | Samples | Protocol |
+| --- | ---: | ---: | --- |
+| Train | 234 | 125,552 | Historical flood events |
+| Validation | 20 | 4,476 | Temporally separated events |
+| Test | 21 | 3,527 | Temporally separated events |
+| **Total** | **275** | **133,555** | Global event-level benchmark |
 
-The reference labels correspond to **event-induced inundation**, not generic surface water. Permanent and background water bodies are excluded under the adopted reference definition.
+> **Label definition:** the reference masks represent **event-induced inundation**, rather than generic surface water. Permanent and background water bodies are excluded under the adopted reference definition.
+
+### Download
+
+The benchmark is publicly available on Hugging Face:
+
+**[GeoFlood-275 on Hugging Face](https://huggingface.co/datasets/jiepanli/GeoFlood-275)**
 
 ---
 
-## Code Release
-
-This repository now includes the official GeoFloodNet training and evaluation code for research reproducibility.
-
-### Repository Layout
+## Repository Structure
 
 ```text
 network/
   GeoFloodNet.py        # GeoFloodNet model
 utils/
-  dataloader.py         # main GeoFlood-275 GeoTIFF dataloader
-  dataload_v2.py        # optional extended dataloader for extra products
-  utils.py              # training helpers
-train.py                # training entry point
-test.py                 # validation/test evaluation and visualization
+  dataloader.py         # Main GeoFlood-275 GeoTIFF dataloader
+  dataload_v2.py        # Optional extended dataloader for extra products
+  utils.py              # Training helpers
+train.py                # Training entry point
+test.py                 # Validation/test evaluation and visualization
 ```
 
-### Dataset Layout
+---
 
-`train.py` and `test.py` expect the GeoTIFF dataset root to contain `Train`, `Val`, and `Test` folders:
+## Dataset Structure
+
+`train.py` and `test.py` expect the GeoTIFF dataset root to contain `Train`, `Val`, and `Test` directories:
 
 ```text
 Benchmark_all/
-  Train/
-    Sentinel-2/
-    Sentinel-1/
-    CD_Flood/
-    DEM/
-    ESAV200/
-    Dynamic_Landcover/
-    Slope_Norm/
-  Val/
-    ...
-  Test/
-    ...
+├── Train/
+│   ├── Sentinel-2/
+│   ├── Sentinel-1/
+│   ├── CD_Flood/
+│   ├── DEM/
+│   ├── ESAV200/
+│   ├── Dynamic_Landcover/
+│   └── Slope_Norm/
+├── Val/
+│   └── ...
+└── Test/
+    └── ...
 ```
 
-The benchmark dataset is publicly hosted on Hugging Face:
+### Input Normalization
 
-https://huggingface.co/datasets/jiepanli/GeoFlood-275
+The released GeoTIFF files are **not** stored as pre-normalized training tensors. Normalization is performed online by `utils/dataloader.py`:
 
-The released GeoTIFF files are not pre-normalized training tensors. `utils/dataloader.py` applies normalization at load time: Sentinel-1 is clipped to `[-45, 25]` dB and mapped to `[-1, 1]`, Sentinel-2 is clipped to `[0, 6000]` and mapped to `[-1, 1]`, DEM is scaled by `/5000` and standardized, slope is clipped to `[0, 1]`, ESA WorldCover classes are remapped to contiguous IDs, Dynamic World labels remain integer labels, and flood masks are mapped to `{0, 1}` when needed.
+| Data | Preprocessing |
+| --- | --- |
+| Sentinel-1 | Clip to `[-45, 25]` dB and map to `[-1, 1]` |
+| Sentinel-2 | Clip to `[0, 6000]` and map to `[-1, 1]` |
+| DEM | Scale by `/5000` and standardize |
+| Slope | Clip to `[0, 1]` |
+| ESA WorldCover | Remap classes to contiguous IDs |
+| Dynamic World | Keep integer class labels |
+| Flood mask | Map to `{0, 1}` when needed |
 
-### Installation
+---
 
-Install PyTorch for your CUDA version from the official PyTorch instructions, then install the remaining dependencies:
+## Installation
+
+Install PyTorch according to your CUDA environment, then install the remaining dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### Training
+---
+
+## Pretrained Models
+
+| Model | Download |
+| --- | --- |
+| Pretrained Sentinel-1 encoder | [Google Drive](https://drive.google.com/file/d/1cxNs0zVH6hx9Q2QcBizjV8tyE_NdrLyq/view?usp=sharing) |
+| Pretrained Sentinel-2 encoder | [Google Drive](https://drive.google.com/file/d/178Qhyp2EFwpK4JWIzuimYL5nO7qZquPH/view?usp=sharing) |
+| Trained GeoFloodNet model | [Google Drive](https://drive.google.com/file/d/1K45JaW4vxwptWe6JAml2kaFlUjWSYQFh/view?usp=sharing) |
+
+---
+
+## Training
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python train.py \
   --dataset_root /path/to/GeoFlood-275/Benchmark_all \
+  --pre_s1 path \
+  --pre_s2 path \
   --save_path ./Experiments/GeoFloodNet \
   --batchsize 8 \
   --amp
 ```
 
-### Evaluation
+---
+
+## Evaluation
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python test.py \
   --model floodnet \
-  --psdp_mix
+  --psdp_mix \
   --dataset_root /path/to/GeoFlood-275/Benchmark_all \
   --load ./Experiments/GeoFloodNet/Val_best.pth \
   --batchsize 4 \
   --amp
 ```
 
-Evaluation writes per-split metrics, confusion matrices, prediction masks, and visualizations under the checkpoint directory unless `--output_dir` is specified.
+By default, evaluation outputs are written under the checkpoint directory and include:
+
+- per-split evaluation metrics;
+- confusion matrices;
+- predicted flood masks;
+- visualization results.
+
+Use `--output_dir` to specify a custom output directory when needed.
 
 ---
 
-## Platform Availability
+## Online Flood Monitoring Platform
 
-The GeoFloodNet online flood monitoring platform is coming soon.
+The GeoFloodNet online platform is being developed to make rapid flood mapping accessible without requiring users to manually download, preprocess, and align multi-source remote-sensing data.
 
-Once released, users will be able to:
+The planned workflow is:
 
-* upload GeoJSON or Shapefile AOIs;
-* select flood monitoring time ranges;
-* browse available Sentinel-1 and Sentinel-2 observations;
-* run GeoFloodNet-based flood extraction online;
-* visualize and download flood inundation results.
+| Step | Operation | Description |
+| ---: | --- | --- |
+| 1 | **Upload AOI** | Upload a target area using GeoJSON or Shapefile. |
+| 2 | **Select time range** | Specify the monitoring period for the target flood event. |
+| 3 | **Retrieve observations** | Automatically search available Sentinel-1 and Sentinel-2 observations. |
+| 4 | **Prepare geographic context** | Automatically prepare terrain and land-cover information. |
+| 5 | **Select image pair** | Select suitable pre-event optical and post-event SAR observations. |
+| 6 | **Run flood extraction** | Perform geographically conditioned optical–SAR inference with GeoFloodNet. |
+| 7 | **Export results** | Visualize and download the generated flood inundation map and associated outputs. |
 
-No local installation or manual multi-source data preparation will be required.
-
----
-
-## Notes
-
-The manuscript associated with this project has been submitted for peer review. The official GeoFloodNet source code is released in this repository, and the GeoFlood-275 benchmark dataset is released on Hugging Face for research reproducibility:
-
-https://huggingface.co/datasets/jiepanli/GeoFlood-275
+The platform will be made publicly accessible after finalization.
 
 ---
 
 ## Citation
 
+If you find GeoFloodNet or GeoFlood-275 useful in your research, please cite:
+
 ```bibtex
 @misc{li2026geoflood275,
-  title = {Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical-SAR Fusion},
+  title  = {Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical-SAR Fusion},
   author = {Li, Jiepan and Huang, He and Li, Wenke and Li, Linxin and Xie, Anqi and Ye, Ruoru and Hu, Lei and Hu, Ting and He, Wei and Zhang, Liangpei},
-  year = {2026},
-  note = {Manuscript under revision for Remote Sensing of Environment}
+  year   = {2026},
+  note   = {Manuscript under revision for Remote Sensing of Environment}
 }
 ```
+
+---
+
+## Status
+
+- ✅ GeoFloodNet training and evaluation code released
+- ✅ GeoFlood-275 benchmark released on Hugging Face
+- 🚧 Online flood monitoring platform under development
+- 📝 Associated manuscript under peer review
 
 ---
 
