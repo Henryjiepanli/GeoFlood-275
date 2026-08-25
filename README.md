@@ -189,6 +189,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 ```bash
 CUDA_VISIBLE_DEVICES=0 python test.py \
   --model floodnet \
+  --psdp_mix
   --dataset_root /path/to/GeoFlood-275/Benchmark_all \
   --load ./Experiments/GeoFloodNet/Val_best.pth \
   --batchsize 4 \
