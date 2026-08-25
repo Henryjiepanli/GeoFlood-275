@@ -1,0 +1,7 @@
+numpy
+Pillow
+rasterio
+tensorboardX
+thop
+torch
+tqdm

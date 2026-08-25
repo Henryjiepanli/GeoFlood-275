@@ -123,6 +123,82 @@ The reference labels correspond to **event-induced inundation**, not generic sur
 
 ---
 
+## Code Release
+
+This repository now includes the official GeoFloodNet training and evaluation code for research reproducibility.
+
+### Repository Layout
+
+```text
+network/
+  GeoFloodNet.py        # GeoFloodNet model
+utils/
+  dataloader.py         # main GeoFlood-275 GeoTIFF dataloader
+  dataload_v2.py        # optional extended dataloader for extra products
+  utils.py              # training helpers
+train.py                # training entry point
+test.py                 # validation/test evaluation and visualization
+```
+
+### Dataset Layout
+
+`train.py` and `test.py` expect the GeoTIFF dataset root to contain `Train`, `Val`, and `Test` folders:
+
+```text
+Benchmark_all/
+  Train/
+    Sentinel-2/
+    Sentinel-1/
+    CD_Flood/
+    DEM/
+    ESAV200/
+    Dynamic_Landcover/
+    Slope_Norm/
+  Val/
+    ...
+  Test/
+    ...
+```
+
+The benchmark dataset is publicly hosted on Hugging Face:
+
+https://huggingface.co/datasets/jiepanli/GeoFlood-275
+
+The released GeoTIFF files are not pre-normalized training tensors. `utils/dataloader.py` applies normalization at load time: Sentinel-1 is clipped to `[-45, 25]` dB and mapped to `[-1, 1]`, Sentinel-2 is clipped to `[0, 6000]` and mapped to `[-1, 1]`, DEM is scaled by `/5000` and standardized, slope is clipped to `[0, 1]`, ESA WorldCover classes are remapped to contiguous IDs, Dynamic World labels remain integer labels, and flood masks are mapped to `{0, 1}` when needed.
+
+### Installation
+
+Install PyTorch for your CUDA version from the official PyTorch instructions, then install the remaining dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### Training
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python train.py \
+  --dataset_root /path/to/GeoFlood-275/Benchmark_all \
+  --save_path ./Experiments/GeoFloodNet \
+  --batchsize 8 \
+  --amp
+```
+
+### Evaluation
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python test.py \
+  --model floodnet \
+  --dataset_root /path/to/GeoFlood-275/Benchmark_all \
+  --load ./Experiments/GeoFloodNet/Val_best.pth \
+  --batchsize 4 \
+  --amp
+```
+
+Evaluation writes per-split metrics, confusion matrices, prediction masks, and visualizations under the checkpoint directory unless `--output_dir` is specified.
+
+---
+
 ## Platform Availability
 
 The GeoFloodNet online flood monitoring platform is coming soon.
@@ -141,9 +217,22 @@ No local installation or manual multi-source data preparation will be required.
 
 ## Notes
 
-The manuscript associated with this project has been submitted for peer review.
+The manuscript associated with this project has been submitted for peer review. The official GeoFloodNet source code is released in this repository, and the GeoFlood-275 benchmark dataset is released on Hugging Face for research reproducibility:
 
-At this stage, the repository is intended as a project page and platform preview. Source code and benchmark data are not publicly released here.
+https://huggingface.co/datasets/jiepanli/GeoFlood-275
+
+---
+
+## Citation
+
+```bibtex
+@misc{li2026geoflood275,
+  title = {Toward Rapid Flood Mapping Anywhere via Terrain- and Land-Cover-Conditioned Optical-SAR Fusion},
+  author = {Li, Jiepan and Huang, He and Li, Wenke and Li, Linxin and Xie, Anqi and Ye, Ruoru and Hu, Lei and Hu, Ting and He, Wei and Zhang, Liangpei},
+  year = {2026},
+  note = {Manuscript under revision for Remote Sensing of Environment}
+}
+```
 
 ---
 
