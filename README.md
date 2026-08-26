@@ -103,7 +103,6 @@ network/
   GeoFloodNet.py        # GeoFloodNet model
 utils/
   dataloader.py         # Main GeoFlood-275 GeoTIFF dataloader
-  dataload_v2.py        # Optional extended dataloader for extra products
   utils.py              # Training helpers
 train.py                # Training entry point
 test.py                 # Validation/test evaluation and visualization
