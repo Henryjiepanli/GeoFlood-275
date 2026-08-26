@@ -1,24 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-FloodNet_baseline_geoplus.py
-
-Baseline + GeoMod+:
-- Multi-scale GeoPromptLite
-- Geo-guided modulation at x4/x8/x16/x32
-- Reliability-aware adaptive fusion at x4/x8/x16/x32
-- Explicit difference feature |s2-s1| in each fusion stage
-
-Inputs:
-  s2_pre : (B,4,H,W) float32
-  s1_post: (B,2,H,W) float32
-  esa    : (B,1,H,W) int64 in [0,11]
-  dw     : (B,1,H,W) int64 in [0,8]
-  slope  : (B,1,H,W) float32 in [0,1]
-
-Output:
-  logits : (B,num_classes,H,W)
-  aux    : dict
-"""
 
 from typing import Tuple, Optional, Dict, Any, List
 import torch
