@@ -1,21 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-train.py (TIF-based) for GeoFloodNet
-
-- No warmup (pure poly LR, iter-based)
-- GPU confusion matrix metrics
-- AMP, DataParallel, checkpoint resume with global_iter
-- Model: network.GeoFloodNet.FloodNet
-- TensorBoard STEP logging disabled (only epoch logging kept)
-
-Optional:
-- --pre_s1 / --pre_s2 to load pretrained encoders only (strict=False)
-
-IMPORTANT:
-- This assumes your dataloader get_loader() is TIF-based (utils.dataloader),
-  and you pass --dataset_root = "/path/to/GeoFlood-275/Benchmark_all"
-  which contains Train/Val/Test subfolders.
-"""
 
 import os
 import sys
